@@ -32,7 +32,8 @@ private struct PresentationView<Content: View>: UIViewRepresentable {
             if uiView.controller == nil {
                 let controller = PresentingController(rootView: content())
                 uiView.controller = controller
-
+                
+                UIApplication.shared.dismissKeyboard()
                 uiView.parentViewController?.present(controller, animated: true)
             } else {
                 uiView.controller?.setContent(content())
@@ -212,4 +213,12 @@ final private class PresentingController<C: View>: UIHostingController<AnyView>,
             }
         }
     }
+}
+
+internal extension UIApplication {
+  func dismissKeyboard() {
+    sendAction(
+      #selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil
+    )
+  }
 }
