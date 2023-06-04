@@ -31,8 +31,8 @@ let package = Package(
     // packages this package depends on.
     .target(
       name: "SwiftUIBottomSheet",
-      dependencies: [],
-      path: "Sources"
+      dependencies: ["Introspect"],
+      path: "SwiftUIBottomSheet/Classes"
     ),
   ]
 )
