@@ -22,6 +22,8 @@ public extension UIColor {
 public struct BottomSheetConfig {
 
     public init(maxHeight: CGFloat = 600,
+                safeAreaRegions: SafeAreaRegions = [],
+                safeAreaEdges: Edge.Set = [],
                 kind: Kind = .interactiveDismiss,
                 overlayColor: Color = .init(.bottomSheetOverlay),
                 shadow: Color? = .init(.black).opacity(0.4),
@@ -31,6 +33,8 @@ public struct BottomSheetConfig {
                 topBarCornerRadius: CGFloat? = nil,
                 sizeChangeRequest: Binding<CGFloat> = .constant(0)) {
         self.maxHeight = maxHeight
+        self.safeAreaRegions = safeAreaRegions
+        self.safeAreaEdges = safeAreaEdges
         self.kind = kind
         self.overlayColor = overlayColor
         self.shadow = shadow
@@ -39,6 +43,17 @@ public struct BottomSheetConfig {
         self.handlePosition = handlePosition
         self.topBarCornerRadius = topBarCornerRadius
         self.sizeChangeRequest = sizeChangeRequest
+    }
+    
+    public func copyWith(
+      safeAreaRegions: SafeAreaRegions? = nil,
+      safeAreaEdges: Edge.Set? = nil
+    ) -> Self {
+      var new = self
+      new.safeAreaRegions = safeAreaRegions ?? self.safeAreaRegions
+      new.safeAreaEdges = safeAreaEdges ?? self.safeAreaEdges
+      
+      return new
     }
 
     public enum Kind: Int, CaseIterable, Equatable {
@@ -55,6 +70,8 @@ public struct BottomSheetConfig {
     }
 
     public var maxHeight: CGFloat
+    public var safeAreaRegions: SafeAreaRegions
+    public var safeAreaEdges: Edge.Set
     public var kind: Kind
     public var overlayColor: Color
     public var shadow: Color?
@@ -198,6 +215,7 @@ private struct BottomSheetContainer<Content: View>: View {
                 .overlay(
                     sheetContentContainer(geometry: geometry), alignment: .bottom
                 )
+                .ignoresSafeArea(config.safeAreaRegions, edges: config.safeAreaEdges)
         }
         .onReceive(Just(isPresented && transition.phase == .live && appear)) { newValue in
             guard newValue != shown else { return }
