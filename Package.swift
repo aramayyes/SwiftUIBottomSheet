@@ -21,7 +21,7 @@ let package = Package(
     // Dependencies declare other packages that this package depends on.
     .package(
       url: "https://github.com/siteline/SwiftUI-Introspect",
-      from: "0.5.1"
+      from: "1.0.0"
     ),
   ],
   targets: [
