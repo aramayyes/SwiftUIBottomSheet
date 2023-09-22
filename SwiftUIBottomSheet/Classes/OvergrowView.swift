@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Combine
-import Introspect
+import SwiftUIIntrospect
 
 public struct OvergrowScrollView<Content: View>: View {
 
